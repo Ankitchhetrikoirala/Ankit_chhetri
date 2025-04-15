@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buy a Dog - Phoenix</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      padding: 2rem;
+    }
+
+    h1, h2, h3, h4 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: black;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      color: rgb(59, 30, 30);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    h4 {
+      font-size: 1rem;
+    }
+
+    .dog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .dog-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .dog-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .dog-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 15px;
+    }
+
+    .dog-card h2 {
+      margin: 1rem 0 0.3rem;
+      font-size: 1.5rem;
+    }
+
+    .dog-card p {
+      margin: 0.2rem 0;
+      color: #555;
+    }
+
+    .price {
+      font-size: 1.2rem;
+      color: #0071e3;
+      margin-top: 0.5rem;
+    }
+
+    .buy-button {
+      background-color: #0071e3;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 1rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .buy-button:hover {
+      background-color: #005bb5;
+    }
+
+    .bought-message {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 1.2rem;
+      color: green;
+    }
+
+    #addressModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    #addressModal div {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #addressModal input, #addressModal select {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    #addressModal button {
+      background-color: #0071e3;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #addressModal button:hover {
+      background-color: #005bb5;
+    }
+
+    .close-btn {
+      align-self: flex-end;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .close-btn:hover {
+      color: red;
+    }
+
+    .comment-section {
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .comment-section textarea {
+      width: 90%;
+      max-width: 600px;
+      height: 120px;
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .comment-section button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .comment-section button:hover {
+      background-color: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+  <h1>INDIA DOG KENNEL</h1>
+  <h4>Contact us-7063540829 📞</h4>
+  <h2>🐶 Buy a Dog/Puppy Online</h2>
+
+  <div class="dog-grid" id="dogGrid"></div>
+  <div class="bought-message" id="boughtMessage"></div>
+
+  <!-- Address Modal -->
+  <div id="addressModal">
+    <div>
+      <span class="close-btn" onclick="closeModal()">✖</span>
+      <h3>Enter Your Details</h3>
+
+      <!-- Customer Details -->
+      <input id="customerName" type="text" placeholder="Your Name">
+      <select id="customerGender">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option> <!-- Added "Other" option -->
+      </select>
+      <input id="customerAge" type="number" placeholder="Your Age" min="1">
+
+      <!-- Address Fields -->
+      <input id="flatNo" type="text" placeholder="Flat/House No">
+      <input id="street" type="text" placeholder="Street">
+      <input id="city" type="text" placeholder="City">
+      <input id="state" type="text" placeholder="State">
+      <input id="pincode" type="text" placeholder="Pincode">
+
+      <!-- Select Dog or Puppy -->
+      <select id="dogOrPuppy">
+        <option value="">Select Dog or Puppy</option>
+        <option value="Dog">Dog</option>
+        <option value="Puppy">Puppy</option>
+      </select>
+
+      <select id="petGender">
+        <option value="">Select Pet Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+      <input id="userPhone" type="text" placeholder="Your Phone Number">
+
+      <button onclick="submitPurchase()">Submit</button>
+    </div>
+  </div>
+
+  <!-- Comment Section -->
+  <div class="comment-section">
+    <h3>📝 Want to inquire about a dog?</h3>
+    <textarea id="commentBox" placeholder="Type your inquiry here (e.g., I want a white Labrador puppy)..."></textarea><br>
+    <button onclick="submitInquiry()">Submit Inquiry</button>
+  </div>
+
+  <script>
+    const dogs = [
+      { name: "Buddy", breed: "Golden Retriever", price: "₹19,000", img: "https://th.bing.com/th/id/R.9003028d7ec6ff58a70a2be15a05ffed?rik=9cLEFO6s9oiGeg&riu=http%3a%2f%2fwww.publicdomainpictures.net%2fpictures%2f40000%2fvelka%2fgolden-retriever-dog-1364426710r9x.jpg&ehk=Z8ZK9mRUJe0rT61EYByfWPUGg1BEToYpGPK3bCz1aTU%3d&risl=&pid=ImgRaw&r=0" },
+      { name: "Luna", breed: "Labrador Retriever", price: "₹16,000", img: "https://i.pinimg.com/originals/5e/78/d1/5e78d1ba396caf687f9458af8988e29b.jpg" },
+      { name: "Sadie", breed: "German shepherd", price: "₹20,000", img: "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg" },
+      { name: "Coco", breed: "Pug", price: "₹20,000", img: "https://cdn.britannica.com/35/233235-050-8DED07E3/Pug-dog.jpg" },
+      { name: "Willow", breed: "Rottweiler", price: "₹25,000", img: "https://cdn.britannica.com/69/234469-050-B883797B/Rottweiler-dog.jpg" },
+      { name: "Scotch", breed: "Doberman", price: "₹18,000", img: "https://th.bing.com/th/id/R.3caf57a9023e764203c11a04df18c048?rik=ZCtoZ3JtiN9n1Q&riu=http%3a%2f%2fcdn.marketplace.akc.org%2fmedia%2f41015%2f1467559877_9835_2280.jpg&ehk=EJAqAuz21XJ7bJvR8VeNrNeFcKyT4jEynTRUCqIcJ9c%3d&risl=&pid=ImgRaw&r=0" },
+      { name: "Lucy", breed: "Black German", price: "₹25,000", img: "https://www.pupvine.com/wp-content/uploads/2021/09/Portrait-of-a-beautiful-german-shepherd-735x491.jpg" },
+      { name: "Daisy", breed: "Shih Tzu", price: "₹22,000", img: "https://talktodogs.com/wp-content/uploads/2023/06/An-affectionate-Shih-Tzu-dog-lounging-in-a-small-apartment-illustrating-its-adaptability-to-limited-living-spaces-768x576.png" },
+      { name: "Sweety", breed: "White puppy", price: "₹8000", img: "https://www.rd.com/wp-content/uploads/2021/03/GettyImages-1014940472-scaled.jpg" }
+    ];
+
+    const grid = document.getElementById("dogGrid");
+    const modal = document.getElementById("addressModal");
+    let selectedDog = {};
+
+    dogs.forEach(dog => {
+      const card = document.createElement("div");
+      card.className = "dog-card";
+      card.innerHTML = `
+        <img src="${dog.img}" alt="${dog.name}">
+        <h2>${dog.name}</h2>
+        <p>${dog.breed}</p>
+        <p class="price">${dog.price}</p>
+        <p style="margin-top: 0.5rem; font-weight: bold; color: #333;">Dog & Puppy Available</p>
+        <button class="buy-button" onclick="buyDog('${dog.name}', '${dog.breed}', '${dog.price}')">Buy Now</button>
+      `;
+      grid.appendChild(card);
+    });
+
+    function buyDog(name, breed, price) {
+      selectedDog = { name, breed, price };
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+    function submitPurchase() {
+      const customerName = document.getElementById("customerName").value.trim();
+      const customerGender = document.getElementById("customerGender").value.trim();
+      const customerAge = document.getElementById("customerAge").value.trim();
+      const flatNo = document.getElementById("flatNo").value.trim();
+      const street = document.getElementById("street").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const state = document.getElementById("state").value.trim();
+      const pincode = document.getElementById("pincode").value.trim();
+      const dogOrPuppy = document.getElementById("dogOrPuppy").value.trim();
+      const petGender = document.getElementById("petGender").value.trim();
+      const userPhone = document.getElementById("userPhone").value.trim();
+
+      if (customerName && customerGender && customerAge && flatNo && street && city && state && pincode && dogOrPuppy && petGender && userPhone) {
+        const fullAddress = `${flatNo}, ${street}, ${city}, ${state} - ${pincode}`;
+        const message = `🎉 I want to buy *${selectedDog.name}* (${selectedDog.breed}) for *${selectedDog.price}*.\n📦 Shipping Address: ${fullAddress}\n📱 Phone Number: ${userPhone}\n🐶 Dog/Puppy: ${dogOrPuppy}\n🚻 Pet Gender: ${petGender}\n👤 Customer: ${customerName}, ${customerGender}, ${customerAge} years`;
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappURL = `https://wa.me/917063540829?text=${encodedMessage}`;
+        window.open(whatsappURL, "_blank");
+
+        modal.style.display = "none";
+        document.querySelectorAll("#addressModal input, #addressModal select").forEach(input => input.value = "");
+      } else {
+        alert("Please fill in all the fields.");
+      }
+    }
+
+    function submitInquiry() {
+      const inquiry = document.getElementById("commentBox").value.trim();
+      if (inquiry) {
+        const message = `📝 Customer Inquiry: ${inquiry}`;
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappURL = `https://wa.me/917063540829?text=${encodedMessage}`;
+        window.open(whatsappURL, "_blank");
+        document.getElementById("commentBox").value = ""; // Clear comment box after submission
+      } else {
+        alert("Please type an inquiry.");
+      }
+    }
+  </script>
+  <h3></h3>
+  <h3>Owner - Indrajeet Patel</h3>
+</body>
+</html>
+
+
